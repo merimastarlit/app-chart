@@ -1,8 +1,9 @@
-# Default values for meerims-app.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+replicas: 3
+deploymentName: dso
+applicaiton: nginx-app
+serviceAccountName: nginx-sa
 
-replicaCount: 1
+containerName: nginx
 
 image:
   repository: nginx
