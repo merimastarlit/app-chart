@@ -3,21 +3,21 @@ kind: Deployment
 metadata:
   name: nginx-app
   labels:
-    managed-by: {{ .Values.deploymentName }}
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.nginxApp.replicas }}
   selector:
     matchLabels:
-      application: {{ .Values.application }}
+      {{- include "commonLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        application: {{ .Values.application }}
+        {{- include "commonLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ .Values.serviceAccountName }} #nginx-sa
+      serviceAccountName: {{ .Values.serviceAccountName }}
       containers:
-        - name: {{ .Values.containerName}} #nginx
-          image: us-central1-docker.pkg.dev/my-project-417822/app-repo/docker-gar:v1
+        - name: {{ .Values.nginxApp.containerName}}
+          image:  {{ .Values.nginxApp.image.repository}}:{{ .Values.nginxApp.image.tag }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: {{ .Values.nginxApp.portName }}
+              containerPort: {{ .Values.nginxApp.portNumber}}

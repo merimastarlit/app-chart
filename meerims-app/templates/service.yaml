@@ -6,8 +6,8 @@ metadata:
     managed-by: dso
 spec:
   selector:
-    application: mginx-app
+    application: nginx-app
   ports:
-    - name: http
-      port: 80
-      targetPort: 80
+    - name: {{ .Values.nginxApp.portName }}
+      port: {{ .Values.nginxApp.portNumber }}
+      targetPort: {{ .Values.nginxApp.targetPort }}
