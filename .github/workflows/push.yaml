@@ -6,7 +6,10 @@ on:
     types:
       - completed
 
-
+env: 
+  PROJECT_ID: my-project-417822
+  REGISTRY_LOCATION: us-central1
+  REPOSITORY: app-repo
 jobs:
   package_and_push:
     runs-on: ubuntu-latest
