@@ -7,7 +7,7 @@ nginxApp:
  targetPort: 80
  image:
   repository: us-central1-docker.pkg.dev/my-project-417822/app-repo/docker-gar
-  tag: v1
+  tag: v4kuv
 serviceAccountName: nginx-sa
 
 

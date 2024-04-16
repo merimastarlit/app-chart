@@ -1,0 +1,38 @@
+name: Package and Push Helm Chart
+
+on:
+  workflow_run:
+    workflows: ["Helm lint workflow"]
+    types:
+      - completed
+
+jobs:
+  package_and_push:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 'v3.6.0' # Adjust version as needed
+
+      - name: Package Helm chart
+        run: |
+          helm package ./meerims-app/ . -d ./packaged_chart
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{GCP_KEY_JSON}}'
+          token_format: "access_token"
+          
+
+
+      - name: Push Helm chart to repository
+        run: |
+          helm push packaged_chart-0.1.0.tgz oci://us-central1-docker.pkg.dev/my-project-417822/app-repo
+  
