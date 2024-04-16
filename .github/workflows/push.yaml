@@ -6,6 +6,7 @@ on:
     types:
       - completed
 
+
 jobs:
   package_and_push:
     runs-on: ubuntu-latest
@@ -22,17 +23,18 @@ jobs:
 
       - name: Package Helm chart
         run: |
-          helm package ./meerims-app/ . -d ./packaged_chart
+          helm package ./meerims-app/ . -d ./packaged_chart/*.tgz
+        
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v0
         with:
-          credentials_json: '${{GCP_KEY_JSON}}'
+          credentials_json: '${{secrets.GCP_KEY_JSON}}'
           token_format: "access_token"
           
 
 
       - name: Push Helm chart to repository
         run: |
-          helm push packaged_chart-0.1.0.tgz oci://us-central1-docker.pkg.dev/my-project-417822/app-repo
+          helm push packaged_chart/*.tgz oci://us-central1-docker.pkg.dev/my-project-417822/app-repo
   
